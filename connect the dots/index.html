@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Tierra Whack Connect the Dots</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <img src="./assets/logo.png" id="logo" />
+  <div class="container">
+    <div class="settings">
+      <div class="controls">
+        <label>Brush Size
+          <input type="range" id="stroke" name="stroke" min="0" max="10" />
+        </label>
+        <div id="colors"></div>
+        <button id="clear">Clear Canvas</button>
+      </div>
+      <button id="download">Download Drawing</button>
+    </div>
+    <canvas id="canvas" width="700" height="700"></canvas>
+  </div>
+  <img src="./assets/dots.jpg" id="dots" />
+  <script type="module" src="./script.js"></script>
+</body>
+
+</html>
