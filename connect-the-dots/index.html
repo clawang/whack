@@ -18,13 +18,21 @@
           <input type="range" id="stroke" name="stroke" min="0" max="10" />
         </label>
         <div id="colors"></div>
-        <button id="clear">Clear Canvas</button>
       </div>
-      <button id="download">Download Drawing</button>
+      <div class="controls">
+        <label>Sticker Size
+          <input type="range" id="sticker-size" name="sticker-size" min="40" max="120" value="80" />
+        </label>
+        <div id="stickers"></div>
+      </div>
+      <div class="button-container">
+        <button id="clear">Clear Canvas</button>
+        <button id="download">Download Drawing</button>
+      </div>
     </div>
     <canvas id="canvas" width="700" height="700"></canvas>
   </div>
-  <img src="./assets/dots.jpg" id="dots" />
+  <img src="./assets/dots-2.jpg" id="dots" />
   <script type="module" src="./script.js"></script>
 </body>
 

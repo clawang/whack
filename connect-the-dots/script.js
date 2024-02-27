@@ -12,7 +12,10 @@ var prevX = 0,
     dot_flag = false;
 var fillColor = "black",
     fillIndex = 0,
-    y = 2;
+    stickerIndex = -1,
+    stroke = 2,
+    stickerSize = 80,
+    stickerOn = false;
 
 const colors = ["#000000", "#f14515",
     "#f6f30c",
@@ -29,13 +32,39 @@ const colors = ["#000000", "#f14515",
     "#e4012b",
     "#307fe2"];
 const colorElements = [];
+const stickers = ["1_mood_swing",
+    "2_ms_behave",
+    "3_chanel_pit",
+    "4_numb",
+    "5_burning_brains",
+    "6_accessible",
+    "7_imaginary_friends",
+    "8_x",
+    "9_moovies",
+    "10_difficult",
+    "11_shower_song",
+    "12_invitation",
+    "13_snake_eyes",
+    "14_two_night",
+    "15_27_club"
+];
+const stickerElements = [];
 
-function changeActive(index) {
+function changeActive(index, sticker) {
+    stickerOn = sticker;
     for (let i = 0; i < colorElements.length; i++) {
-        if (i === index) {
+        if (i === index && !sticker) {
             colorElements[i].classList.add("active");
         } else {
             colorElements[i].classList.remove("active");
+        }
+    }
+
+    for (let i = 0; i < stickerElements.length; i++) {
+        if (i === index && sticker) {
+            stickerElements[i].div.classList.add("active");
+        } else {
+            stickerElements[i].div.classList.remove("active");
         }
     }
 }
@@ -49,12 +78,27 @@ function addColors() {
         div.addEventListener("click", (e) => {
             fillColor = color;
             fillIndex = i;
-            changeActive(i);
+            changeActive(i, false);
         });
         container.appendChild(div);
         colorElements.push(div);
     });
     colorElements[0].classList.add("active");
+
+    var container2 = document.getElementById("stickers");
+    stickers.forEach((sticker, i) => {
+        var div = document.createElement("div");
+        div.classList.add("sticker-option");
+        var img = document.createElement("img");
+        img.src = `./assets/icons/${sticker}.png`;
+        div.appendChild(img);
+        div.addEventListener("click", (e) => {
+            stickerIndex = i;
+            changeActive(i, true);
+        });
+        container2.appendChild(div);
+        stickerElements.push({ div, img });
+    });
 }
 
 async function loadFonts() {
@@ -67,12 +111,17 @@ async function loadFonts() {
     document.fonts.add(font1);
 }
 
+function drawSticker() {
+    stickerElements[stickerIndex].img.fill = fillColor;
+    ctx.drawImage(stickerElements[stickerIndex].img, currX - stickerSize/2*ratio, currY - stickerSize/2*ratio, stickerSize*ratio, stickerSize*ratio);
+}
+
 function draw() {
     ctx.beginPath();
     ctx.moveTo(prevX, prevY);
     ctx.lineTo(currX, currY);
     ctx.strokeStyle = fillColor;
-    ctx.lineWidth = y;
+    ctx.lineWidth = stroke;
     ctx.lineCap = 'round';
     ctx.stroke();
     ctx.closePath();
@@ -82,38 +131,40 @@ function findxy(res, e) {
     if (res == 'down') {
         prevX = currX;
         prevY = currY;
-        currX = e.clientX - canvas.offsetLeft;
-        currY = e.clientY - canvas.offsetTop;
+        currX = e.clientX - canvas.getBoundingClientRect().left;
+        currY = e.clientY - canvas.getBoundingClientRect().top;
 
         flag = true;
         dot_flag = true;
-        if (dot_flag) {
+        if (dot_flag && stickerIndex < 0) {
             ctx.beginPath();
             ctx.fillStyle = fillColor;
-            ctx.ellipse(currX, currY, y / 2, y / 2, 0, 0, 6);
+            ctx.ellipse(currX, currY, stroke / 2, stroke / 2, 0, 0, 6);
             ctx.fill();
             ctx.closePath();
             dot_flag = false;
+        } else if (stickerOn) {
+            drawSticker();
         }
     }
     if (res == 'up' || res == "out") {
         flag = false;
     }
     if (res == 'move') {
-        if (flag) {
+        if (flag && !stickerOn) {
             prevX = currX;
             prevY = currY;
-            currX = e.clientX - canvas.offsetLeft;
-            currY = e.clientY - canvas.offsetTop;
+            currX = e.clientX - canvas.getBoundingClientRect().left;
+            currY = e.clientY - canvas.getBoundingClientRect().top;
             draw();
         }
     }
     if (res == 'touchmove') {
-        if (flag) {
+        if (flag && !stickerOn) {
             prevX = currX;
             prevY = currY;
-            currX = e.touches[0].clientX - canvas.offsetLeft;
-            currY = e.touches[0].clientY - canvas.offsetTop;
+            currX = e.touches[0].clientX - canvas.getBoundingClientRect().left;
+            currY = e.touches[0].clientY - canvas.getBoundingClientRect().top;
             draw();
         }
     }
@@ -145,7 +196,6 @@ function resizeCanvas() {
 
 function setup() {
     // set the CSS display size
-    console.log(document.querySelector(".container").clientWidth);
     resizeCanvas();
 
     canvas.addEventListener("mousemove", function (e) {
@@ -174,7 +224,10 @@ function setup() {
     }, false);
 
     document.getElementById("stroke").addEventListener("change", (e) => {
-        y = e.target.value;
+        stroke = e.target.value;
+    });
+    document.getElementById("sticker-size").addEventListener("change", (e) => {
+        stickerSize = e.target.value;
     });
 
     drawCanvas();

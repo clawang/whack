@@ -90,10 +90,7 @@ input {
   border: 1px solid white;
   padding: 20px;
   margin-bottom: 20px;
-}
-.controls button {
-  background: white;
-  color: #0f1d26;
+  width: 100%;
 }
 
 #colors {
@@ -103,14 +100,48 @@ input {
 }
 
 .color-option {
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
   margin: 2px;
   border-radius: 50%;
   cursor: pointer;
 }
 .color-option.active {
-  border: 1px solid white;
+  border: 2px solid white;
+}
+
+#stickers {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 10px 0;
+}
+
+.sticker-option {
+  width: 30px;
+  height: 30px;
+  margin: 2px;
+  border-radius: 50%;
+  cursor: pointer;
+  background: white;
+}
+.sticker-option img {
+  width: 100%;
+  max-height: 100%;
+}
+.sticker-option.active {
+  border: 2px solid #f14515;
+}
+
+.button-container {
+  display: flex;
+}
+.button-container button {
+  margin: 3px;
+}
+
+#download {
+  background: white;
+  color: #0f1d26;
 }
 
 @media (max-width: 900px) {
