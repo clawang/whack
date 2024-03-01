@@ -18,7 +18,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  touch-action: none;
   overflow: scroll;
 }
 
@@ -34,6 +33,7 @@ canvas {
   border: 2px solid black;
   margin: 20px;
   flex-shrink: 1;
+  touch-action: none;
 }
 
 button {
