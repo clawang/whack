@@ -69,14 +69,15 @@ function drawCanvas() {
     ctx.fillStyle = palette[0];
     ctx.fillRect(0, 0, width, height);
 
+    var lyric = quotes[mood][getRandom(0, quotes[mood].length)];
+    var lyricLines = lyric.split("\n");
+
     ctx.fillStyle = palette[1];
-    var fontSize = 40;
+    var fontSize = lyric.length > 39 ? 30 : 40;
     ctx.textAlign = "center";
     ctx.font = `${fontSize}px Archivo Black`;
     ctx.textBaseline = "top";
-
-    var lyric = quotes[mood][getRandom(0, quotes[mood].length)];
-    var lyricLines = lyric.split("\n");
+    
     var lines = [];
     lyricLines.forEach(lyricLine => {
         lines = lines.concat(getLines(ctx, lyricLine, (width - 40) * ratio));
@@ -108,10 +109,12 @@ function chooseMood(index) {
 // wait for DOM to load before drawing to the canvas
 window.addEventListener('load', async () => {
     await loadFonts();
-    document.getElementById('happy').addEventListener('click', () => chooseMood(0), false);
-    document.getElementById('empowering').addEventListener('click', () => chooseMood(1), false);
-    document.getElementById('upbeat').addEventListener('click', () => chooseMood(2), false);
-    document.getElementById('dramatic').addEventListener('click', () => chooseMood(3), false);
+    document.getElementById('empowering').addEventListener('click', () => chooseMood(0), false);
+    document.getElementById('dramatic').addEventListener('click', () => chooseMood(1), false);
+    document.getElementById('uplifting').addEventListener('click', () => chooseMood(2), false);
+    document.getElementById('whacky').addEventListener('click', () => chooseMood(3), false);
+    var regenerate = document.getElementById('regenerate');
+    regenerate.addEventListener('click', drawCanvas, false);
     var download = document.getElementById('download');
     download.addEventListener('click', downloadImage, false);
 });
