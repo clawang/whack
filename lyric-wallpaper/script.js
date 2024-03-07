@@ -7,6 +7,7 @@ var width = 368;
 var height = 654;
 var ratio = 1;
 var mood = -1; // 0 is happy, 1 is empowering, 2 is upbeat, 3 is dramatic
+var share;
 
 function getRandom(min, max) {
     let index = Math.floor(Math.random() * (max - min)) + min;
@@ -68,22 +69,26 @@ function shareImage() {
         // send them as an array of files.
         const files = [new File([blob], 'whack.png', { type: blob.type })]
         const shareData = {
-          text: '#worldwidewhack',
-          title: 'Some title',
-          files,
+            text: '#worldwidewhack',
+            title: 'Whack Wallpaper',
+            files,
         }
-        if (navigator.canShare(shareData)) {
-          try {
-            await navigator.share(shareData)
-          } catch (err) {
-            if (err.name !== 'AbortError') {
-              console.error(err.name, err.message)
+        if (navigator.share && navigator.canShare(shareData)) {
+            try {
+                await navigator.share(shareData);
+            } catch (err) {
+                if (err.name !== 'AbortError') {
+                    console.error(err.name, err.message);
+                }
             }
-          }
         } else {
-          console.warn('Sharing not supported', shareData)
+            navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+            share.innerHTML = "Copied!";
+            setTimeout(() => {
+                share.innerHTML = "Share";
+            }, 1000);
         }
-      });
+    });
 }
 
 function drawCanvas() {
@@ -101,7 +106,7 @@ function drawCanvas() {
     ctx.textAlign = "center";
     ctx.font = `${fontSize}px Archivo Black`;
     ctx.textBaseline = "top";
-    
+
     var lines = [];
     lyricLines.forEach(lyricLine => {
         lines = lines.concat(getLines(ctx, lyricLine, (width - 40) * ratio));
@@ -141,6 +146,6 @@ window.addEventListener('load', async () => {
     regenerate.addEventListener('click', drawCanvas, false);
     var download = document.getElementById('download');
     download.addEventListener('click', downloadImage, false);
-    var share = document.getElementById('share');
+    share = document.getElementById('share');
     share.addEventListener('click', shareImage, false);
 });
