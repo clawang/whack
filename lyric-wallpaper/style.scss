@@ -207,8 +207,29 @@ button {
     max-height: 100%;
 }
 
-.button-wrapper {
+.button-container {
+    width: 100%;
     display: flex;
+    align-items: center;
+
+    button {
+        margin: 0 3px;
+    }
+
+    #share, #download {
+        width: 100%;
+    }
+}
+
+#regenerate {
+    width: 55px;
+    height: 56px;
+    padding: 0;
+    flex-shrink: 0;
+
+    img {
+        width: 30px;
+    }
 }
 
 @media (max-width: 600px) {

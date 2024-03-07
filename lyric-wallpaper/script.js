@@ -58,8 +58,32 @@ function getLines(ctx, text, maxWidth) {
 function downloadImage() {
     var link = document.createElement('a');
     link.download = 'whack.png';
-    link.href = document.getElementById('lyrics').toDataURL()
+    link.href = canvas.toDataURL()
     link.click();
+}
+
+function shareImage() {
+    canvas.toBlob(async (blob) => {
+        // Even if you want to share just one file you need to
+        // send them as an array of files.
+        const files = [new File([blob], 'whack.png', { type: blob.type })]
+        const shareData = {
+          text: '#worldwidewhack',
+          title: 'Some title',
+          files,
+        }
+        if (navigator.canShare(shareData)) {
+          try {
+            await navigator.share(shareData)
+          } catch (err) {
+            if (err.name !== 'AbortError') {
+              console.error(err.name, err.message)
+            }
+          }
+        } else {
+          console.warn('Sharing not supported', shareData)
+        }
+      });
 }
 
 function drawCanvas() {
@@ -117,4 +141,6 @@ window.addEventListener('load', async () => {
     regenerate.addEventListener('click', drawCanvas, false);
     var download = document.getElementById('download');
     download.addEventListener('click', downloadImage, false);
+    var share = document.getElementById('share');
+    share.addEventListener('click', shareImage, false);
 });

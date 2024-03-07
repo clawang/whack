@@ -175,8 +175,26 @@ button {
   max-height: 100%;
 }
 
-.button-wrapper {
+.button-container {
+  width: 100%;
   display: flex;
+  align-items: center;
+}
+.button-container button {
+  margin: 0 3px;
+}
+.button-container #share, .button-container #download {
+  width: 100%;
+}
+
+#regenerate {
+  width: 55px;
+  height: 56px;
+  padding: 0;
+  flex-shrink: 0;
+}
+#regenerate img {
+  width: 30px;
 }
 
 @media (max-width: 600px) {
