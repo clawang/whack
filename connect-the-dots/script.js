@@ -171,17 +171,18 @@ function findxy(res, e) {
 }
 
 function resizeCanvas() {
-    console.log(window.innerWidth);
-    if (window.innerWidth > 700 && window.innerWidth < 900) {
-        ratio = 500 / 700;
-        width = 500;
-        height = 500;
-    }
+    // console.log(window.innerWidth);
+    let containerWidth = document.querySelector(".canvas-container").clientWidth;
+    // if (containerWidth > 700 && containerWidth < 900) {
+    //     ratio = 500 / 700;
+    //     width = 500;
+    //     height = 500;
+    // }
 
-    if (window.innerWidth < 700) {
-        ratio = window.innerWidth / 700;
-        width = window.innerWidth;
-        height = window.innerWidth;
+    if (containerWidth < 700) {
+        ratio = containerWidth / 700;
+        width = containerWidth;
+        height = containerWidth;
     }
 
     canvas.style.width = width + 'px';
